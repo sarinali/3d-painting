@@ -1,0 +1,38 @@
+{
+  "source": "User reference: codex-clipboard-3PK2va.png",
+  "method": "HSV groups + weighted sRGB k-means; 8-level channel histogram bins",
+  "pixelCount": 97295,
+  "colors": {
+    "water": [
+      "#0899c0",
+      "#8abdc2",
+      "#598298",
+      "#07768a",
+      "#4199b8",
+      "#378393",
+      "#0c7fa7",
+      "#0e9588",
+      "#689fb4",
+      "#0a6b6b"
+    ],
+    "leaf": [
+      "#0ea267",
+      "#afd9b8",
+      "#68ae8e",
+      "#449f73",
+      "#0e804f",
+      "#89bfa5"
+    ],
+    "flower": [
+      "#e1b6b5",
+      "#8f5a6b",
+      "#c8686f",
+      "#b27e98"
+    ],
+    "highlights": [
+      "#91a2ac",
+      "#c6d1cd",
+      "#a3bfbf"
+    ]
+  }
+}
