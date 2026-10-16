@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Musician · Tensor shapes</title>
+<style>
+:root{color-scheme:light dark;--bg:#faf9f6;--fg:#283733;--muted:#63716c;--line:#b8c7c0;--green:#408369;--tile:#d4e7dd;--orange:#b47c3d;--soft:#eef3ef}
+@media(prefers-color-scheme:dark){:root{--bg:#17211d;--fg:#e5eee8;--muted:#acbeb1;--line:#5d7867;--green:#7abd98;--tile:#294b39;--orange:#e5b877;--soft:#223128}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:36px 24px}h1{font-size:26px;font-weight:500;margin:0 0 8px}p{margin:0;color:var(--muted)}.flow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:50px 0 30px}.stage{text-align:center;flex:1;min-width:0}.visual{height:180px;display:flex;align-items:center;justify-content:center;position:relative}.label{margin-top:16px;font-weight:500}.shape{font-family:ui-monospace,monospace;color:var(--muted);font-size:13px;margin-top:4px}.arrow{font-size:25px;color:var(--muted);flex:none}.stack{position:relative;width:var(--size);height:var(--size);margin-right:14px}.square{position:absolute;inset:0;border:1px solid var(--green);background:var(--tile);transform:translate(calc(var(--i)*5px),calc(var(--i)*-5px))}.square.top{background:repeating-linear-gradient(0deg,transparent 0 calc(100%/8 - 1px),var(--line) calc(100%/8 - 1px) calc(100%/8)),repeating-linear-gradient(90deg,var(--tile) 0 calc(100%/8 - 1px),var(--line) calc(100%/8 - 1px) calc(100%/8))}.painting{width:140px;height:140px;border:1px solid var(--line);background:radial-gradient(ellipse at 70% 25%,#f3bb91 0 12%,transparent 13%),radial-gradient(ellipse at 35% 65%,#c7dca7 0 22%,transparent 23%),repeating-linear-gradient(155deg,#527b79 0 12px,#71998a 12px 24px,#9eb4a0 24px 31px);position:relative}.coords{position:absolute;right:-15px;bottom:-14px;background:var(--soft);border:1px solid var(--line);width:53px;height:53px;display:grid;place-content:center;color:var(--green);font-family:ui-monospace,monospace}.notes{display:grid;grid-template-columns:repeat(16,1fr);width:140px;height:140px;gap:2px;background:var(--soft);padding:3px;border:1px solid var(--green)}.notes i{background:var(--green);opacity:var(--a)}.branch{display:grid;grid-template-columns:1fr 1fr;gap:34px;border-top:1px solid var(--line);padding-top:20px}.branch-title{text-align:center;color:var(--muted)}.decode{display:flex;align-items:center;justify-content:center;gap:20px;min-height:210px}.recon{filter:blur(2px);width:112px;height:112px}.wave{width:100%;height:100px;display:block;color:var(--orange)}.audio{max-width:320px;margin:34px auto 0}.gradient{color:var(--green);text-align:center;margin-top:12px;padding:14px;background:var(--soft)}.foot{margin-top:24px;text-align:center;font-size:13px;color:var(--muted)}.legend{display:flex;gap:20px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
+@media(max-width:800px){.flow{flex-wrap:wrap;justify-content:center;gap:18px;margin-top:25px}.stage{flex:0 0 25%}.visual{height:165px}.branch{grid-template-columns:1fr}.decode{gap:16px}.flow>.arrow:nth-of-type(8){display:none}}
+@media(max-width:480px){main{padding:24px 14px}.stage{flex-basis:40%}.flow>.arrow{display:none}.visual{transform:scale(.85);height:145px}.label{margin-top:0}.decode{gap:10px}.decode .stack{transform:scale(.85)}.decode .painting{width:90px;height:90px}.shape{font-size:12px}}
+</style>
+<main>
+<h1>Painting → spatial notes → sound</h1>
+<p>The squares are tensors. Stacks show channels.</p>
+<section class="flow" aria-label="Encoder tensor shapes; batch dimension omitted">
+<div class="stage"><div class="visual"><div class="painting" role="img" aria-label="Illustrative painting, not training data"><div class="coords">x ↔<br>y ↕</div></div></div><div class="label">Image + position</div><div class="shape">5 × 64 × 64</div></div>
+<span class="arrow" aria-hidden="true">→</span>
+<div class="stage"><div class="visual"><div class="stack" style="--size:112px" role="img" aria-label="16 feature channels, each 32 by 32"><div class="square" style="--i:3"></div><div class="square" style="--i:2"></div><div class="square" style="--i:1"></div><div class="square top" style="--i:0"></div></div></div><div class="label">Conv + ReLU</div><div class="shape">16 × 32 × 32</div></div>
+<span class="arrow" aria-hidden="true">→</span>
+<div class="stage"><div class="visual"><div class="stack" style="--size:72px" role="img" aria-label="16 feature channels, each 16 by 16"><div class="square" style="--i:3"></div><div class="square" style="--i:2"></div><div class="square" style="--i:1"></div><div class="square top" style="--i:0"></div></div></div><div class="label">Conv + ReLU</div><div class="shape">16 × 16 × 16</div></div>
+<span class="arrow" aria-hidden="true">→</span>
+<div class="stage"><div class="visual"><div class="notes" id="notes" role="img" aria-label="Illustrative 16 pitch by 16 time amplitude grid"></div></div><div class="label">Conv + sigmoid</div><div class="shape">1 × 16 × 16</div></div>
+</section>
+<div class="legend"><span>↑ pitch</span><span>time →</span><span>Darker cell = louder note</span></div>
+<section class="branch" style="margin-top:26px" aria-label="Both branches receive the same note grid">
+<div><div class="branch-title">↙ Same grid → learned image decoder</div><div class="decode"><div><div class="stack" style="--size:85px"><div class="square" style="--i:2"></div><div class="square" style="--i:1"></div><div class="square top" style="--i:0"></div></div><div class="shape" style="margin-top:20px">16 × 32 × 32</div></div><span class="arrow">→</span><div><div class="painting recon" role="img" aria-label="Illustrative reconstructed painting"></div><div class="shape" style="margin-top:20px">3 × 64 × 64</div></div></div><div class="gradient">Reconstruction loss ⟶ updates decoder + encoder</div></div>
+<div><div class="branch-title">↘ Same grid → fixed sine-tone synthesizer</div><div class="audio"><svg class="wave" viewBox="0 0 320 100" role="img" aria-label="Illustrative audio waveform"><path id="waveform" fill="none" stroke="currentColor" stroke-width="2"/></svg><div class="shape" style="text-align:center">16 pitches · 16 time steps · 2.4 seconds</div></div><p style="text-align:center;margin-top:25px">Sound has no training loss.</p></div>
+</section>
+<p class="foot">Grid and images are schematic, not model outputs. Stacks represent 16 channels; spatial dimensions are labeled.</p>
+</main>
+<script>
+const notes=document.getElementById('notes');
+for(let row=15;row>=0;row--) for(let col=0;col<16;col++) {const cell=document.createElement('i');const distance=Math.abs(row-(3+Math.round(6*Math.sin(col*.35)**2)));cell.style.setProperty('--a',distance<2?.8:distance<4?.32:.07);notes.appendChild(cell);}
+let d='';for(let x=0;x<=320;x++){const y=50+Math.sin(x*.18)*Math.sin(x*.037)*29+Math.sin(x*.43)*8;d+=(x?' L':'M')+x+' '+y.toFixed(2)}document.getElementById('waveform').setAttribute('d',d);
+</script>
+</html>

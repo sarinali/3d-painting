@@ -1,0 +1,9 @@
+torch
+numpy
+pillow
+matplotlib
+ipython
+ipykernel
+jupyterlab
+music21
+verovio
